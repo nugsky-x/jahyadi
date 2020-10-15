@@ -1,7 +1,10 @@
 import discord
+import json
+import pprint
 from os import environ
 
 client = discord.Client()
+gamesMap = {}
 
 @client.event
 async def on_ready():
@@ -14,6 +17,9 @@ async def on_message(message):
 
     if message.content.startswith('$hello'):
         await message.channel.send('Hello!')
+    
+    if message.content.lower() is 'p':
+        await message.channel.send('Apa kau ga malu, salam pakai P?')
 
 
 client.run(environ.get('BOT_TOKEN'))
