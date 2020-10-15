@@ -1,10 +1,17 @@
 import discord
 import json
 import pprint
+import random
 from os import environ
 
 client = discord.Client()
-gamesMap = {}
+
+qoutes = [
+    "kau kurang empati",
+    "high tech tai anjing",
+    "aku berharap saja kau tak depresi besok",
+    "seems like kau yang punya balls di sini"
+]
 
 @client.event
 async def on_ready():
@@ -12,15 +19,13 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    print(message.content)
     if message.author == client.user:
         return
-
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
     
     if message.content.lower() == 'p':
         await message.channel.send('Apa kau ga malu, salam pakai P?')
 
+    if message.content.lower() == "sudah quote":
+        await message.channel.send(random.choice(qoutes))
 
 client.run(environ.get('BOT_TOKEN'))
