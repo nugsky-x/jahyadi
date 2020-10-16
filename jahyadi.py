@@ -7,6 +7,7 @@ from os import environ
 import re
 
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
+prefix = "sudah"
 
 client = discord.Client()
 
@@ -29,16 +30,22 @@ async def on_message(message):
     elif message.content.lower() == 'p':
         await message.channel.send('Apa kau ga malu, salam pakai P?')
 
-    elif message.content.lower() == "sudah quote":
+    comparator_prefix = message.content[:len(prefix)].lower()
+    if (comparator_prefix != prefix):
+        return
+    
+    args = message.content.lower().split(' ')
+
+    if args[1] == "quote":
         await message.channel.send(random.choice(quotes))
 
-    elif message.content.lower().startswith("sudah penis"):
+    elif args[1] == "penis":
         await client.wait_until_ready()
         i = random.randint(0,10)
         penis_size = "8" + ("=" * i) + "D"
         user = message.author
-        if len(message.content.split(" ")) > 2:
-            user_id = message.content.split(" ")[-1]
+        if len(args) > 2:
+            user_id = args[2]
             user_id = re.findall("\d+", user_id)[0]
             try:
                 user = await client.fetch_user(int(user_id))
@@ -50,7 +57,7 @@ async def on_message(message):
         if (i == 0):
             await message.channel.send('Apa kau ga malu, punya penis 8D?')
 
-    elif message.content.lower() == 'sudah kontribusi':
+    elif args[1] == 'kontribusi':
         await message.channel.send('https://github.com/nugroho-s/jahyadi')
 
 client.run(environ.get('BOT_TOKEN'))
