@@ -14,13 +14,14 @@ client = discord.Client()
 with open('quotes.json') as json_file:
     quotes = json.load(json_file)
 
+
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
 
+
 @client.event
 async def on_message(message):
-
     if message.author == client.user:
         return
 
@@ -31,9 +32,9 @@ async def on_message(message):
         await message.channel.send('Apa kau ga malu, salam pakai P?')
 
     comparator_prefix = message.content[:len(prefix)].lower()
-    if (comparator_prefix != prefix):
+    if comparator_prefix != prefix:
         return
-    
+
     args = message.content.lower().split(' ')
 
     if args[1] == "quote":
@@ -41,7 +42,7 @@ async def on_message(message):
 
     elif args[1] == "penis":
         await client.wait_until_ready()
-        i = random.randint(0,10)
+        i = random.randint(0, 10)
         penis_size = "8" + ("=" * i) + "D"
         user = message.author
         if len(args) > 2:
@@ -52,12 +53,14 @@ async def on_message(message):
             except discord.errors.NotFound:
                 logging.error("User not found: {}".format(user_id))
                 return
-        embedVar = discord.Embed(title="Peepee size machine", description="{}'s penis\n{}".format(user.name, penis_size), color=0x00ff00)
-        await message.channel.send(embed=embedVar)
-        if (i == 0):
+        embed_var = discord.Embed(title="Peepee size machine",
+                                  description="{}'s penis\n{}".format(user.name, penis_size), color=0x00ff00)
+        await message.channel.send(embed=embed_var)
+        if i == 0:
             await message.channel.send('Apa kau ga malu, punya penis 8D?')
 
     elif args[1] == 'kontribusi':
         await message.channel.send('https://github.com/nugroho-s/jahyadi')
+
 
 client.run(environ.get('BOT_TOKEN'))
