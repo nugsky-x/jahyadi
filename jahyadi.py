@@ -4,6 +4,7 @@ from pprint import pprint
 import logging
 import random
 from os import environ
+import re
 
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
 
@@ -35,11 +36,12 @@ async def on_message(message):
         user = message.author
         if len(message.content.split(" ")) > 2:
             user_id = message.content.split(" ")[-1]
-            user_id = user_id[3:-1]
+            user_id = re.findall("\d+", user_id)[0]
             try:
                 user = await client.fetch_user(int(user_id))
             except discord.errors.NotFound:
                 logging.error("User not found: {}".format(user_id))
+                return
         embedVar = discord.Embed(title="Peepee size machine", description="{}'s penis\n{}".format(user.name, penis_size), color=0x00ff00)
         await message.channel.send(embed=embedVar)
         if (i == 0):
