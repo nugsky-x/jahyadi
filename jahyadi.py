@@ -22,8 +22,11 @@ async def on_message(message):
 
     if message.author == client.user:
         return
-    
-    if message.content.lower() == 'p':
+
+    if '750726551762370680>' in message.content:
+        await message.channel.send('Kalau mau aku baikan, dont ever tag me!!')
+
+    elif message.content.lower() == 'p':
         await message.channel.send('Apa kau ga malu, salam pakai P?')
 
     elif message.content.lower() == "sudah quote":
