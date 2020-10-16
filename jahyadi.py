@@ -1,6 +1,6 @@
 import discord
 import json
-import pprint
+from pprint import pprint
 import random
 from os import environ
 
@@ -15,6 +15,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+
     if message.author == client.user:
         return
     
@@ -24,10 +25,16 @@ async def on_message(message):
     if message.content.lower() == "sudah quote":
         await message.channel.send(random.choice(quotes))
 
-    if message.content.lower() == "sudah penis":
+    if message.content.lower().startswith("sudah penis"):
+        await client.wait_until_ready()
         i = random.randint(0,10)
         penis_size = "8" + ("=" * i) + "D"
-        embedVar = discord.Embed(title="Peepee size machine", description="{}'s penis\n{}".format(message.author.name, penis_size), color=0x00ff00)
+        user = message.author
+        if len(message.content.split(" ")) > 2:
+            user_id = message.content.split(" ")[-1]
+            user_id = user_id[3:-1]
+            user = await client.fetch_user(int(user_id))
+        embedVar = discord.Embed(title="Peepee size machine", description="{}'s penis\n{}".format(user.name, penis_size), color=0x00ff00)
         await message.channel.send(embed=embedVar)
         if (i == 0):
             await message.channel.send('Apa kau ga malu, punya penis 8D?')
