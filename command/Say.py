@@ -2,6 +2,9 @@ import json
 import re
 
 from discord.errors import NotFound
+from discord.errors import Forbidden
+
+from util.Util import try_send
 
 
 class Say:
@@ -23,10 +26,12 @@ class Say:
         try:
             channel = await self.client.fetch_channel(int(channel_id))
         except NotFound:
-            self.logging.error("User not found: {}".format(channel_id))
+            self.logging.error("Channel not found: {}".format(channel_id))
+            return
+        except Forbidden:
             return
 
-        await channel.send(message.content[findnth(message.content, ' ', 2):])
+        await try_send(channel, message.content[findnth(message.content, ' ', 2):])
 
 
 def findnth(haystack, needle, n):

@@ -2,6 +2,8 @@ import discord
 import re
 import random
 
+from util.Util import try_send
+
 
 class Penis:
     def __init__(self, client, logging):
@@ -20,8 +22,9 @@ class Penis:
             except discord.errors.NotFound:
                 self.logging.error("User not found: {}".format(user_id))
                 return
-        embed_var = discord.Embed(title="Peepee size machine",
-                                  description="{}'s penis\n{}".format(user.name, penis_size), color=0x00ff00)
-        await message.channel.send(embed=embed_var)
+
+        await try_send(message.channel, embed=discord.Embed(title="Peepee size machine",
+                                                      description="{}'s penis\n{}".format(user.name, penis_size),
+                                                      color=0x00ff00))
         if i == 0:
-            await message.channel.send('Apa kau ga malu, punya penis 8D?')
+            await try_send(message.channel, 'Apa kau ga malu, punya penis 8D?')
