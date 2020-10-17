@@ -1,10 +1,10 @@
 import json
 import random
-import time
 import urllib.request
 from threading import Timer
 
 from util.Util import try_send
+
 
 class Quote:
     refresh_time = 3600
