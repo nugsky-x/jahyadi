@@ -6,7 +6,7 @@ import random
 from os import environ
 import re
 
-logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
+logging.basicConfig(format='[%(levelname)s] [%(name)s] %(message)s', level=logging.INFO)
 prefix = "sudah"
 
 client = discord.Client()
@@ -17,7 +17,7 @@ with open('quotes.json') as json_file:
 
 @client.event
 async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
+    logging.info('We have logged in as {0.user}'.format(client))
 
 
 @client.event
