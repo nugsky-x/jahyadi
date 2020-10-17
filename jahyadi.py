@@ -1,15 +1,22 @@
-import discord
 import json
-from pprint import pprint
 import logging
 import random
 from os import environ
-import re
+
+import discord
+
+from Kontribusi import Kontribusi
+from Penis import Penis
 
 logging.basicConfig(format='[%(levelname)s] [%(name)s] %(message)s', level=logging.INFO)
 prefix = "sudah"
 
 client = discord.Client()
+
+commandhandlers = {
+                    "penis": Penis(client, logging),
+                    "kontribusi": Kontribusi()
+                  }
 
 with open('quotes.json') as json_file:
     quotes = json.load(json_file)
@@ -37,30 +44,17 @@ async def on_message(message):
 
     args = message.content.lower().split(' ')
 
-    if args[1] == "quote":
-        await message.channel.send(random.choice(quotes))
+    if args[1] in commandhandlers:
+        await commandhandlers[args[1]].do_response(message, args)
 
-    elif args[1] == "penis":
-        await client.wait_until_ready()
-        i = random.randint(0, 10)
-        penis_size = "8" + ("=" * i) + "D"
-        user = message.author
-        if len(args) > 2:
-            user_id = args[2]
-            user_id = re.findall("\d+", user_id)[0]
-            try:
-                user = await client.fetch_user(int(user_id))
-            except discord.errors.NotFound:
-                logging.error("User not found: {}".format(user_id))
-                return
-        embed_var = discord.Embed(title="Peepee size machine",
-                                  description="{}'s penis\n{}".format(user.name, penis_size), color=0x00ff00)
-        await message.channel.send(embed=embed_var)
-        if i == 0:
-            await message.channel.send('Apa kau ga malu, punya penis 8D?')
-
-    elif args[1] == 'kontribusi':
-        await message.channel.send('https://github.com/nugroho-s/jahyadi')
+    # if args[1] == "quote":
+    #     await message.channel.send(random.choice(quotes))
+    #
+    # elif args[1] == "penis":
+    #     await Penis(client,logging).doresponse(message, args)
+    #
+    # elif args[1] == 'kontribusi':
+    #     await message.channel.send('https://github.com/nugroho-s/jahyadi')
 
 
 client.run(environ.get('BOT_TOKEN'))
