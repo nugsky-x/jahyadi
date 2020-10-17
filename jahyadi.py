@@ -1,12 +1,12 @@
 import json
 import logging
-import random
 from os import environ
 
 import discord
 
 from Kontribusi import Kontribusi
 from Penis import Penis
+from Quote import Quote
 
 logging.basicConfig(format='[%(levelname)s] [%(name)s] %(message)s', level=logging.INFO)
 prefix = "sudah"
@@ -15,11 +15,9 @@ client = discord.Client()
 
 commandhandlers = {
                     "penis": Penis(client, logging),
-                    "kontribusi": Kontribusi()
+                    "kontribusi": Kontribusi(),
+                    "quote": Quote()
                   }
-
-with open('quotes.json') as json_file:
-    quotes = json.load(json_file)
 
 
 @client.event
@@ -46,15 +44,6 @@ async def on_message(message):
 
     if args[1] in commandhandlers:
         await commandhandlers[args[1]].do_response(message, args)
-
-    # if args[1] == "quote":
-    #     await message.channel.send(random.choice(quotes))
-    #
-    # elif args[1] == "penis":
-    #     await Penis(client,logging).doresponse(message, args)
-    #
-    # elif args[1] == 'kontribusi':
-    #     await message.channel.send('https://github.com/nugroho-s/jahyadi')
 
 
 client.run(environ.get('BOT_TOKEN'))
